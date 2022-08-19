@@ -1,123 +1,50 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import goalService from "./goalSlice";
+import axios from "axios";
 
-const initialState = {
-  goals: [],
-  isError: false,
-  isSuccess: false,
-  isLoading: false,
-  message: "",
-};
+const API_URL = "/api/goals/";
 
 // Create new goal
-export const createGoal = createAsyncThunk(
-  "goals/create",
-  async (goalData, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await goalService.createGoal(goalData, token);
-    } catch (error) {
-      console.log(error);
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+const createGoal = async (goalData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(API_URL, goalData, config);
+
+  return response.data;
+};
 
 // Get user goals
-export const getGoals = createAsyncThunk(
-  "goals/getAll",
-  async (_, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await goalService.getGoals(token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+const getGoals = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(API_URL, config);
+
+  return response.data;
+};
 
 // Delete user goal
-export const deleteGoal = createAsyncThunk(
-  "goals/delete",
-  async (id, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await goalService.deleteGoal(id, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+const deleteGoal = async (goalId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
-export const goalSlice = createSlice({
-  name: "goal",
-  initialState,
-  reducers: {
-    reset: (state) => initialState,
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(createGoal.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(createGoal.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.goals.push(action.payload);
-      })
-      .addCase(createGoal.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(getGoals.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getGoals.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.goals = action.payload;
-      })
-      .addCase(getGoals.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(deleteGoal.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteGoal.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.goals = state.goals.filter(
-          (goal) => goal._id !== action.payload.id
-        );
-      })
-      .addCase(deleteGoal.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      });
-  },
-});
+  const response = await axios.delete(API_URL + goalId, config);
 
-export const { reset } = goalSlice.actions;
-export default goalSlice.reducer;
+  return response.data;
+};
+
+const goalService = {
+  createGoal,
+  getGoals,
+  deleteGoal,
+};
+
+export default goalService;

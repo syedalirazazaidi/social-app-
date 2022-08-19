@@ -4,35 +4,34 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Spinner from "../components/Spinner";
 import GoalForm from "../components/GoalForm";
-import { getGoals, reset } from "../features/goals/goalService";
+import { getGoals, reset } from "../features/goals/goalSlice";
 import GoalItem from "../components/GoalItems";
 
 const Dashboard = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
 
-  const { goals, isLoading, isError, message } = useSelector(
+  const { goals, isError, message, isLoading } = useSelector(
     (state) => state.goals
   );
-  console.log(goals, "GOALSS");
 
   useEffect(() => {
     if (isError) {
-      console.log(message);
+      console.log(message, "MESSAGE");
     }
 
-    // if (!user) {
-    //   navigate("/login");
-    // }
+    if (!user) {
+      navigate("/login");
+    }
 
     dispatch(getGoals());
 
     return () => {
       dispatch(reset());
     };
-  }, [user, dispatch]);
+  }, [user, navigate, message, isError, dispatch]);
 
   if (isLoading) {
     return <Spinner />;
@@ -44,7 +43,7 @@ const Dashboard = () => {
         <p>Goals Dashboard</p>
       </section>
       <GoalForm />
-      {/* <section className="content">
+      <section className="content">
         {goals.length > 0 ? (
           <div className="goals">
             {goals.map((goal) => (
@@ -54,7 +53,7 @@ const Dashboard = () => {
         ) : (
           <h3>You have not set any goals</h3>
         )}
-      </section>{" "} */}
+      </section>{" "}
     </>
   );
 };
