@@ -106,7 +106,17 @@ h3 {
   cursor: pointer;
   border: none;
   background: none;
+} 
+.edit{
+  position: absolute;
+  top: 76px;
+  right: 12px;
+  cursor: pointer;
+  border: none;
+  background: none;
+
 }
+
 
 .form,
 .content {
@@ -203,6 +213,15 @@ h3 {
 @media (max-width: 600px) {
   .form {
     width: 90%;
+  }
+  .edit{
+  position: absolute;
+  top: 101px;
+  right: 12px;
+  cursor: pointer;
+  border: none;
+  background: none;
+
   }
 
   .heading h1 {

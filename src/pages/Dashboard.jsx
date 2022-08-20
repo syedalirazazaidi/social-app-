@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -8,6 +8,8 @@ import { getGoals, reset } from "../features/goals/goalSlice";
 import GoalItem from "../components/GoalItems";
 
 const Dashboard = () => {
+  const [currentId, setCurrentId] = useState(0);
+  const [text, setText] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -16,22 +18,24 @@ const Dashboard = () => {
   const { goals, isError, message, isLoading } = useSelector(
     (state) => state.goals
   );
+  console.log(isError, "ERROR");
 
   useEffect(() => {
     if (isError) {
       console.log(message, "MESSAGE");
     }
-
     if (!user) {
       navigate("/login");
     }
 
-    dispatch(getGoals());
+    // if (memory) setPostData(memory);
+    // if (goals) setText(goals);
 
-    return () => {
-      dispatch(reset());
-    };
-  }, [user, navigate, message, isError, dispatch]);
+    dispatch(getGoals());
+    // return () => {
+    //   dispatch(reset());
+    // };
+  }, [user, navigate, message, isError, dispatch, currentId]);
 
   if (isLoading) {
     return <Spinner />;
@@ -42,12 +46,22 @@ const Dashboard = () => {
         <h1>Welcome {user && user.name}</h1>
         <p>Goals Dashboard</p>
       </section>
-      <GoalForm />
+      <GoalForm
+        currentId={currentId}
+        setCurrentId={setCurrentId}
+        text={text}
+        setText={setText}
+      />
       <section className="content">
         {goals.length > 0 ? (
           <div className="goals">
             {goals.map((goal) => (
-              <GoalItem key={goal._id} goal={goal} />
+              <GoalItem
+                key={goal._id}
+                goal={goal}
+                currentId={currentId}
+                setCurrentId={setCurrentId}
+              />
             ))}
           </div>
         ) : (

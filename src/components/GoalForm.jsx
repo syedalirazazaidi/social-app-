@@ -1,17 +1,24 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createGoal } from "../features/goals/goalSlice";
+import { createGoal, updateGoal } from "../features/goals/goalSlice";
 
-function GoalForm() {
-  const [text, setText] = useState("");
-
+function GoalForm({ currentId, setCurrentId, setText, text }) {
   const dispatch = useDispatch();
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    dispatch(createGoal({ text }));
-    setText("");
+    if (currentId === 0) {
+      dispatch(createGoal({ text }));
+    } else {
+      dispatch(updateGoal({ currentId, text }));
+    }
+    clear();
+  };
+  const clear = () => {
+    setCurrentId(0);
+    setText({
+      text: "",
+    });
   };
 
   return (
