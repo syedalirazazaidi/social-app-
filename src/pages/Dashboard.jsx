@@ -12,13 +12,9 @@ const Dashboard = () => {
   const [text, setText] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { user } = useSelector((state) => state.auth);
-
-  const { goals, isError, message, isLoading } = useSelector(
-    (state) => state.goals
-  );
-  console.log(isError, "ERROR");
+  const { isError, message, isLoading } = useSelector((state) => state.goals);
+  const { goals } = useSelector((state) => state.goals);
 
   useEffect(() => {
     if (isError) {
@@ -27,6 +23,10 @@ const Dashboard = () => {
     if (!user) {
       navigate("/login");
     }
+
+    // if (goals) {
+    //   setText(text);
+    // }
 
     // if (memory) setPostData(memory);
     // if (goals) setText(goals);
@@ -51,6 +51,7 @@ const Dashboard = () => {
         setCurrentId={setCurrentId}
         text={text}
         setText={setText}
+        goal={goals}
       />
       <section className="content">
         {goals.length > 0 ? (

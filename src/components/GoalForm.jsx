@@ -1,10 +1,16 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { createGoal, updateGoal } from "../features/goals/goalSlice";
 
-function GoalForm({ currentId, setCurrentId, setText, text }) {
+function GoalForm({ currentId, setCurrentId, setText, text, goal }) {
   const dispatch = useDispatch();
-
+  // const goals = useSelector((state) =>
+  // );
+  const newgoal = currentId ? goal.find((g) => g._id === currentId) : null;
+  // console.log(newgoal, "newgoalnewgoal");
+  useEffect(() => {
+    if (newgoal) setText(newgoal.text);
+  }, [newgoal]);
   const onSubmit = (e) => {
     e.preventDefault();
     if (currentId === 0) {
@@ -16,9 +22,7 @@ function GoalForm({ currentId, setCurrentId, setText, text }) {
   };
   const clear = () => {
     setCurrentId(0);
-    setText({
-      text: "",
-    });
+    setText("");
   };
 
   return (

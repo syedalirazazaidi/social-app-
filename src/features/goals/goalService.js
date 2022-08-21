@@ -22,8 +22,8 @@ const updateGoal = async (textData, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.patch(API_URL + currentId, text, config);
-
+  const response = await axios.patch(`${API_URL}/${currentId}`, text, config);
+  // API_URL + currentId
   return response.data;
 };
 

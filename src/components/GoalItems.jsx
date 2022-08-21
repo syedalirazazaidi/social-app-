@@ -13,12 +13,7 @@ function GoalItem({ goal, currentId, setCurrentId }) {
       <button onClick={() => dispatch(deleteGoal(goal._id))} className="close">
         X
       </button>
-      <button
-        onClick={() => setCurrentId(goal._id)}
-        // dispatch(updateGoal({ _id, text }))
-
-        className="edit"
-      >
+      <button onClick={() => setCurrentId(goal._id)} className="edit">
         {" "}
         <FaEdit />
       </button>
