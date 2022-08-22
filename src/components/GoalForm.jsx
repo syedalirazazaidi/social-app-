@@ -7,7 +7,7 @@ function GoalForm({ currentId, setCurrentId, setText, text, goal }) {
   // const goals = useSelector((state) =>
   // );
   const newgoal = currentId ? goal.find((g) => g._id === currentId) : null;
-  console.log(newgoal, "newgoalnewgoal");
+
   useEffect(() => {
     if (newgoal) setText(newgoal.text);
   }, [newgoal, setText]);
