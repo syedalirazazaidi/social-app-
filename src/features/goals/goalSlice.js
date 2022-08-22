@@ -53,7 +53,7 @@ export const getGoals = createAsyncThunk(
 
 export const updateGoal = createAsyncThunk(
   "goals/update",
-  async (edittext, thunkAPI) => {   
+  async (edittext, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
       const updateGoal = await goalService.updateGoal(edittext, token);
@@ -155,7 +155,7 @@ export const goalSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       });
-  }, 
+  },
 });
 
 export const { reset } = goalSlice.actions;

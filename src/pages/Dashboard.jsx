@@ -16,6 +16,18 @@ const Dashboard = () => {
   const { isError, message, isLoading } = useSelector((state) => state.goals);
   const { goals } = useSelector((state) => state.goals);
 
+  // const goals = useSelector((state) =>
+  //   currentId ? state.goals.goals.find((g) => g._id === currentId) : null
+  // );
+
+  // const goals = useSelector((state) =>
+  //   currentId ? state.goals.goals.find((g) => g._id === currentId) : null
+  // );
+  // console.log(newgoal, "newgoalnewgoal");
+  // useEffect(() => {
+  //   if (newgoal) setText(newgoal.text);
+  // }, [newgoal, setText]);
+
   useEffect(() => {
     if (isError) {
       console.log(message, "MESSAGE");
@@ -54,7 +66,7 @@ const Dashboard = () => {
         goal={goals}
       />
       <section className="content">
-        {goals.length > 0 ? (
+        {goals && goals.length > 0 ? (
           <div className="goals">
             {goals.map((goal) => (
               <GoalItem

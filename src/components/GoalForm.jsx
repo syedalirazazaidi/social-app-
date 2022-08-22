@@ -7,16 +7,16 @@ function GoalForm({ currentId, setCurrentId, setText, text, goal }) {
   // const goals = useSelector((state) =>
   // );
   const newgoal = currentId ? goal.find((g) => g._id === currentId) : null;
-  // console.log(newgoal, "newgoalnewgoal");
+  console.log(newgoal, "newgoalnewgoal");
   useEffect(() => {
     if (newgoal) setText(newgoal.text);
-  }, [newgoal]);
+  }, [newgoal, setText]);
   const onSubmit = (e) => {
     e.preventDefault();
     if (currentId === 0) {
       dispatch(createGoal({ text }));
     } else {
-      dispatch(updateGoal({ currentId, text }));
+      dispatch(updateGoal({ _id: currentId, text }));
     }
     clear();
   };

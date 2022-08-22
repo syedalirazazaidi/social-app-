@@ -16,13 +16,13 @@ const createGoal = async (goalData, token) => {
 };
 
 const updateGoal = async (textData, token) => {
-  const { currentId, text } = textData;
+  const { _id, text } = textData;
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.patch(`${API_URL}/${currentId}`, text, config);
+  const response = await axios.put(`${API_URL}/${_id}`, { text }, config);
   // API_URL + currentId
   return response.data;
 };
